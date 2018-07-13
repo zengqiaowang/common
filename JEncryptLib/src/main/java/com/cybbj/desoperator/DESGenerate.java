@@ -81,16 +81,32 @@ public class DESGenerate extends KeyGenerate{
 	 * 				数据。当数据是8的倍数，不在数据后面增加80 00 …
 	 * 					    当数据不是8的倍数,在数据后面增加80 00 …	,增加后的数据是8的倍数
 	 */
-	public byte[] decryptByPBOC(JKeyParmater enKey,byte[] sourceData) throws Exception{
+	public byte[] decryptByCBCNOPADDING(JKeyParmater enKey,byte[] sourceData) throws Exception{
 		Mechanism mechanism = new Mechanism("DESede/CBC/NOPADDING",new CBCParam());
 		byte[] decryptData = super.decrypt(mechanism, enKey, sourceData);
-//		byte[] decryptPadding = PBOCPadding.unPadding(0, 8,decryptData);
-		byte[] decryptPadding = PBOCPadding.unPaddingPBOC(decryptData);
-		return decryptPadding;
+		return decryptData;
+	}
+	/**
+	 * 减去PADDING
+	 * @param enKey
+	 * 				密钥
+	 * @param sourceData
+	 * 				数据。当数据是8的倍数，不在数据后面增加80 00 …
+	 * 					    当数据不是8的倍数,在数据后面增加80 00 …	,增加后的数据是8的倍数
+	 */
+	public byte[] decryptByECBNOPADDING(JKeyParmater enKey,byte[] sourceData) throws Exception{
+		Mechanism mechanism = new Mechanism("DESede/ECB/NOPADDING",new CBCParam());
+		byte[] decryptData = super.decrypt(mechanism, enKey, sourceData);
+		return decryptData;
 	}
 	
-	public byte[] decryptByPKCS(JKeyParmater enKey,byte[] sourceData) throws Exception{
+	public byte[] decryptByCBCPKCS7Padding(JKeyParmater enKey,byte[] sourceData) throws Exception{
 		Mechanism mechanism = new Mechanism("DESede/CBC/PKCS7Padding",new CBCParam());
+		byte[] decryptData = super.decrypt(mechanism, enKey, sourceData);
+		return decryptData;
+	}
+	public byte[] decryptByECBPKCS7Padding(JKeyParmater enKey,byte[] sourceData) throws Exception{
+		Mechanism mechanism = new Mechanism("DESede/ECB/PKCS7Padding",new CBCParam());
 		byte[] decryptData = super.decrypt(mechanism, enKey, sourceData);
 		return decryptData;
 	}
@@ -104,16 +120,24 @@ public class DESGenerate extends KeyGenerate{
 	 * 				当数据是8的倍数，不在数据后面增加80 00 …
 	 * 				当数据不是8的倍数,在数据后面增加80 00 …,增加后的数据是8的倍数
 	 */
-	public byte[] encryptByPBOC(JKeyParmater enKey,byte[] sourceData) throws Exception{
+	public byte[] encryptByCBCNOPADDING(JKeyParmater enKey,byte[] sourceData) throws Exception{
 		Mechanism mechanism = new Mechanism("DESede/CBC/NOPADDING",new CBCParam());
-		byte[] sourcePadding = PBOCPadding.addPaddingPBOC(sourceData);
-		byte[] encryptData = super.encrypt(mechanism, enKey, sourcePadding);
+		byte[] encryptData = super.encrypt(mechanism, enKey, sourceData);
+		return encryptData;
+	}
+	public byte[] encryptByECBNOPADDING(JKeyParmater enKey,byte[] sourceData) throws Exception{
+		Mechanism mechanism = new Mechanism("DESede/ECB/NOPADDING",new CBCParam());
+		byte[] encryptData = super.encrypt(mechanism, enKey, sourceData);
 		return encryptData;
 	}
 	
-	public byte[] encryptByPKCS(JKeyParmater enKey,byte[] sourceData) throws Exception{
+	public byte[] encryptByCBCPKCS7Padding(JKeyParmater enKey,byte[] sourceData) throws Exception{
 		Mechanism mechanism = new Mechanism("DESede/CBC/PKCS7Padding",new CBCParam());
-//		byte[] sourcePadding = PBOCPadding.addPadding(0, 8,sourceData);
+		byte[] encryptData = super.encrypt(mechanism, enKey, sourceData);
+		return encryptData;
+	}
+	public byte[] encryptByECBPKCS7Padding(JKeyParmater enKey,byte[] sourceData) throws Exception{
+		Mechanism mechanism = new Mechanism("DESede/ECB/PKCS7Padding",new CBCParam());
 		byte[] encryptData = super.encrypt(mechanism, enKey, sourceData);
 		return encryptData;
 	}
@@ -127,20 +151,37 @@ public class DESGenerate extends KeyGenerate{
 	 * 				当数据是8的倍数，不在数据后面增加80 00 …
 	 * 				当数据不是8的倍数,在数据后面增加80 00 …,增加后的数据是8的倍数
 	 */
-	public byte[] encryptByPBOC(byte[] key , byte[] sourceData) throws Exception{
+	public byte[] encryptByCBCNOPADDING(byte[] key , byte[] sourceData) throws Exception{
 		byte[] _3desKey = get3DESKey(key);
 		JKeyParmater enKey = new JKeyParmater("DESede",_3desKey);
 		Mechanism mechanism = new Mechanism("DESede/CBC/NOPADDING",new CBCParam());
-		byte[] sourcePadding = PBOCPadding.addPaddingPKCS(sourceData);
+//		byte[] sourcePadding = PBOCPadding.addPaddingPKCS(sourceData);
 //		addPadding(sourceData);
-		byte[] encryptData = super.encrypt(mechanism, enKey, sourcePadding);
+		byte[] encryptData = super.encrypt(mechanism, enKey, sourceData);
+		return encryptData;
+	}
+	public byte[] encryptByECBNOPADDING(byte[] key , byte[] sourceData) throws Exception{
+		byte[] _3desKey = get3DESKey(key);
+		JKeyParmater enKey = new JKeyParmater("DESede",_3desKey);
+		Mechanism mechanism = new Mechanism("DESede/ECB/NOPADDING",new CBCParam());
+//		byte[] sourcePadding = PBOCPadding.addPaddingPKCS(sourceData);
+//		addPadding(sourceData);
+		byte[] encryptData = super.encrypt(mechanism, enKey, sourceData);
 		return encryptData;
 	}
 	
-	public byte[] encryptByPKCS(byte[] key , byte[] sourceData) throws Exception{
+	public byte[] encryptByCBCPKCS7Padding(byte[] key , byte[] sourceData) throws Exception{
 		byte[] _3desKey = get3DESKey(key);
 		JKeyParmater enKey = new JKeyParmater("DESede",_3desKey);
 		Mechanism mechanism = new Mechanism("DESede/CBC/PKCS7Padding",new CBCParam());
+//		addPadding(sourceData);
+		byte[] encryptData = super.encrypt(mechanism, enKey, sourceData);
+		return encryptData;
+	}
+	public byte[] encryptByECBPKCS7Padding(byte[] key , byte[] sourceData) throws Exception{
+		byte[] _3desKey = get3DESKey(key);
+		JKeyParmater enKey = new JKeyParmater("DESede",_3desKey);
+		Mechanism mechanism = new Mechanism("DESede/ECB/PKCS7Padding",new CBCParam());
 //		addPadding(sourceData);
 		byte[] encryptData = super.encrypt(mechanism, enKey, sourceData);
 		return encryptData;
@@ -154,7 +195,7 @@ public class DESGenerate extends KeyGenerate{
 	 * 				数据。当数据是8的倍数，不在数据后面增加80 00 …
 	 * 					    当数据不是8的倍数,在数据后面增加80 00 …	,增加后的数据是8的倍数
 	 */
-	public byte[] decryptByPBOC(byte[] key , byte[] sourceData) throws Exception{
+	public byte[] decryptByCBCNOPADDING(byte[] key , byte[] sourceData) throws Exception{
 		byte[] _3desKey = get3DESKey(key);
 		JKeyParmater enKey = new JKeyParmater("DESede",_3desKey);
 		Mechanism mechanism = new Mechanism("DESede/CBC/NOPADDING",new CBCParam());
@@ -164,8 +205,17 @@ public class DESGenerate extends KeyGenerate{
 		System.out.println("解密后的数据：" + Converts.bytesToHexString(decryptPadding));
 		return decryptPadding;
 	}
-	
-	public byte[] decryptByPKCS(byte[] key , byte[] sourceData) throws Exception{
+	public byte[] decryptByECBNOPADDING(byte[] key , byte[] sourceData) throws Exception{
+		byte[] _3desKey = get3DESKey(key);
+		JKeyParmater enKey = new JKeyParmater("DESede",_3desKey);
+		Mechanism mechanism = new Mechanism("DESede/ECB/NOPADDING",new CBCParam());
+		byte[] decryptData = super.decrypt(mechanism, enKey, sourceData);
+		
+		byte[] decryptPadding = PBOCPadding.unPaddingPKCS(decryptData);
+		System.out.println("解密后的数据：" + Converts.bytesToHexString(decryptPadding));
+		return decryptPadding;
+	}
+	public byte[] decryptByCBCPKCS7Padding(byte[] key , byte[] sourceData) throws Exception{
 		byte[] _3desKey = get3DESKey(key);
 		JKeyParmater enKey = new JKeyParmater("DESede",_3desKey);
 		Mechanism mechanism = new Mechanism("DESede/CBC/PKCS7Padding",new CBCParam());
@@ -174,16 +224,30 @@ public class DESGenerate extends KeyGenerate{
 		System.out.println("解密后的数据：" + Converts.bytesToHexString(decryptData));
 		return decryptData;
 	}
+	public byte[] decryptByECBPKCS7Padding(byte[] key , byte[] sourceData) throws Exception{
+		byte[] _3desKey = get3DESKey(key);
+		JKeyParmater enKey = new JKeyParmater("DESede",_3desKey);
+		Mechanism mechanism = new Mechanism("DESede/ECB/PKCS7Padding",new CBCParam());
+		byte[] decryptData = super.decrypt(mechanism, enKey, sourceData);
+		
+		System.out.println("解密后的数据：" + Converts.bytesToHexString(decryptData));
+		return decryptData;
+	}
 	
-	
-	public byte[] encryptFileByPKCS(byte[] key , InputStream sourceData) throws Exception{
+	public byte[] encryptFileByCBCPKCS7Padding(byte[] key , InputStream sourceData) throws Exception{
 		byte[] _3desKey = get3DESKey(key);
 		JKeyParmater enKey = new JKeyParmater("DESede",_3desKey);
 		Mechanism mechanism = new Mechanism("DESede/CBC/PKCS7Padding",new CBCParam());
 		return super.encrypt(mechanism, enKey, sourceData);
 	}
+	public byte[] encryptFileByECBPKCS7Padding(byte[] key , InputStream sourceData) throws Exception{
+		byte[] _3desKey = get3DESKey(key);
+		JKeyParmater enKey = new JKeyParmater("DESede",_3desKey);
+		Mechanism mechanism = new Mechanism("DESede/ECB/PKCS7Padding",new CBCParam());
+		return super.encrypt(mechanism, enKey, sourceData);
+	}
 	
-	public byte[] decryptFileByPKCS(byte[] key ,InputStream encryptedData) throws Exception{
+	public byte[] decryptFileByCBCPKCS7Padding(byte[] key ,InputStream encryptedData) throws Exception{
 		byte[] _3desKey = get3DESKey(key);
 		JKeyParmater deKey = new JKeyParmater("DESede",_3desKey);
 		Mechanism mechanism = new Mechanism("DESede/CBC/PKCS7Padding",new CBCParam());
@@ -191,7 +255,13 @@ public class DESGenerate extends KeyGenerate{
 		
 	}
 	
-	
+	public byte[] decryptFileByECBPKCS7Padding(byte[] key ,InputStream encryptedData) throws Exception{
+		byte[] _3desKey = get3DESKey(key);
+		JKeyParmater deKey = new JKeyParmater("DESede",_3desKey);
+		Mechanism mechanism = new Mechanism("DESede/ECB/PKCS7Padding",new CBCParam());
+		return super.decrypt(mechanism, deKey, encryptedData);
+		
+	}
 	
 	
 	/**
