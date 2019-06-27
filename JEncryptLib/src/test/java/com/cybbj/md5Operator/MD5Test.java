@@ -4,6 +4,8 @@
  */
 package com.cybbj.md5Operator;
 
+import java.io.UnsupportedEncodingException;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,7 +26,7 @@ public class MD5Test {
 	}
 	
 	@Test
-	public void testMD5EncodeToHex() {
+	public void testMD5EncodeToHex() throws UnsupportedEncodingException {
 		System.out.println(MD5.MD5EncodeToHex(this.srcString));
 	}
 	

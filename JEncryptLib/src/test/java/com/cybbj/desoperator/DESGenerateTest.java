@@ -4,6 +4,7 @@
  */
 package com.cybbj.desoperator;
 
+import java.io.UnsupportedEncodingException;
 import java.security.Security;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
@@ -45,10 +46,16 @@ public class DESGenerateTest {
 		sourceEncryptData = src.getBytes();
 		secretKey = secretKeyStr.getBytes();
 		desGenerate = new DESGenerate();*/
-		String src = "8DDFE8ABD46516AB4B3229CB3FAC850111";
+		String src = "中文测试opabadafdsaf";
 		String secretKeyStr = "D66B20E010DC382CD50B015B32ABC8CB";
 		
-		sourceEncryptData = Converts.HexString2Bytes(src);
+		//sourceEncryptData = Converts.HexString2Bytes(src);
+		try {
+			sourceEncryptData = src.getBytes("UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		secretKey = Converts.HexString2Bytes(secretKeyStr);
 		desGenerate = new DESGenerate();
 	}
@@ -111,7 +118,13 @@ public class DESGenerateTest {
 			e.printStackTrace();
 		}
 		System.out.println("CBC加密后数据:" + Converts.bytesToHexString(enData));
-		System.out.println("CBC解密后数据:" + Converts.bytesToHexString(deData));
+		//System.out.println("CBC解密后数据:" + Converts.bytesToHexString(deData));
+		try {
+			System.out.println("CBC解密后数据:" + new String(deData,"UTF-8"));
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		//Assert.assertArrayEquals(sourceEncryptData, deData);
 	}
 	

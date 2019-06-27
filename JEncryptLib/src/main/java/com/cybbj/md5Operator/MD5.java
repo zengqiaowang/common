@@ -4,13 +4,14 @@
  */
 package com.cybbj.md5Operator;
 
+import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import com.cybbj.util.Converts;
 
 /** 
- * MD5: TODO请填写类描述
+ * MD5: MD5加密类
  * 
  * @version 1.0
  * @author 15989
@@ -22,8 +23,9 @@ public class MD5 {
 	 * 
 	 * @param origin
 	 * @return
+	 * @throws UnsupportedEncodingException 
 	 */
-	public static String MD5EncodeToHex(String origin) {
+	public static String MD5EncodeToHex(String origin) throws UnsupportedEncodingException {
 		return Converts.bytesToHexString(MD5Encode(origin));
 	}
 
@@ -32,9 +34,10 @@ public class MD5 {
 	 * 
 	 * @param origin
 	 * @return
+	 * @throws UnsupportedEncodingException 
 	 */
-	public static byte[] MD5Encode(String origin) {
-		return MD5Encode(origin.getBytes());
+	public static byte[] MD5Encode(String origin) throws UnsupportedEncodingException {
+		return MD5Encode(origin.getBytes("UTF-8"));
 	}
 
 	/**
