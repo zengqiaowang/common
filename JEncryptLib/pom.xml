@@ -21,12 +21,49 @@
       <version>4.8.2</version>
       <scope>test</scope>
     </dependency>
-    <!-- https://mvnrepository.com/artifact/org.codehaus.xfire/bcprov-jdk15 -->
+    <!-- https://mvnrepository.com/artifact/org.codehaus.xfire/bcprov-jdk15
 	<dependency>
 	    <groupId>org.codehaus.xfire</groupId>
 	    <artifactId>bcprov-jdk15</artifactId>
 	    <version>133</version>
 	</dependency>
-    
+     -->
+     <dependency>
+         <groupId>org.bouncycastle</groupId>
+         <artifactId>bcprov-jdk15on</artifactId>
+         <version>1.59</version>
+     </dependency> 
   </dependencies>
+  <build>
+          <plugins>
+        
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                    <encoding>UTF8</encoding>
+                </configuration>
+            </plugin>
+        
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <webResources>
+                        <resource>
+                            <directory>${project.basedir}/lib</directory>
+                            <targetPath>WEB-INF/lib</targetPath>
+                            <filtering>true</filtering>
+                            <includes>
+                                <include>**/*.jar</include>
+                            </includes>
+                        </resource>
+                    </webResources>
+                </configuration>
+            </plugin>
+         </plugins> 
+     </build> 
 </project>
