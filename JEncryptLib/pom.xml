@@ -24,10 +24,10 @@
     <!-- https://mvnrepository.com/artifact/org.codehaus.xfire/bcprov-jdk15 -->
 	<!-- 通常使用包，与bcprov-jdk15on包不能同时使用 -->
 	<dependency>
-	    <groupId>org.codehaus.xfire</groupId>
-	    <artifactId>bcprov-jdk15</artifactId>
-	    <version>140</version>
-	</dependency>    
+		<groupId>bouncycastle</groupId>
+		<artifactId>bcprov-jdk15</artifactId>
+		<version>140</version>
+	</dependency>
 	 
 	<!-- 银联刷脸付使用包(国密算法)，与bcprov-jdk15包不能同时使用
     <dependency>
