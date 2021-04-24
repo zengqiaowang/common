@@ -21,18 +21,21 @@
       <version>4.8.2</version>
       <scope>test</scope>
     </dependency>
-    <!-- https://mvnrepository.com/artifact/org.codehaus.xfire/bcprov-jdk15
+    <!-- https://mvnrepository.com/artifact/org.codehaus.xfire/bcprov-jdk15 -->
+	<!-- 通常使用包，与bcprov-jdk15on包不能同时使用 -->
 	<dependency>
 	    <groupId>org.codehaus.xfire</groupId>
 	    <artifactId>bcprov-jdk15</artifactId>
-	    <version>133</version>
-	</dependency>
-     -->
-     <dependency>
-         <groupId>org.bouncycastle</groupId>
-         <artifactId>bcprov-jdk15on</artifactId>
-         <version>1.59</version>
-     </dependency> 
+	    <version>140</version>
+	</dependency>    
+	 
+	<!-- 银联刷脸付使用包(国密算法)，与bcprov-jdk15包不能同时使用
+    <dependency>
+        <groupId>org.bouncycastle</groupId>
+        <artifactId>bcprov-jdk15on</artifactId>
+        <version>1.59</version>
+    </dependency> 
+	 -->
   </dependencies>
   <build>
           <plugins>
