@@ -7,8 +7,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.nio.ByteBuffer;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 public class Converts {
 	public final static char[] BToA = "0123456789abcdef".toCharArray();
@@ -243,4 +241,33 @@ public class Converts {
 		}
 		return true;
 	}
+    /** 
+     * 单字节异或 
+     * 
+     * @param src1 
+     * @param src2 
+     * @return 
+     */  
+    public static byte byteXOR(byte src1, byte src2) {  
+        return (byte) ((src1 & 0xFF) ^ (src2 & 0xFF));  
+    }  
+  
+    /** 
+     * 字节数组异或 
+     * 
+     * @param src1 
+     * @param src2 
+     * @return 
+     */  
+    public static byte[] bytesXOR(byte[] src1, byte[] src2) {  
+        int length = src1.length;  
+        if (length != src2.length) {  
+            return null;  
+        }  
+        byte[] result = new byte[length];  
+        for (int i = 0; i < length; i++) {  
+            result[i] = byteXOR(src1[i], src2[i]);  
+        }  
+        return result;  
+    }
 }
