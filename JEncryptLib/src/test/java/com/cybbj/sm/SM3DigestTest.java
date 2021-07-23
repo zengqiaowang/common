@@ -8,7 +8,7 @@ public class SM3DigestTest {
 	@Test
 	public void testSM3Digest() {
 		byte[] md = new byte[32];
-		byte[] msg1 = "abc".getBytes();
+		byte[] msg1 = "abc66678".getBytes();
 		SM3Digest sm3 = new SM3Digest();
 		sm3.update(msg1, 0, msg1.length);
 		sm3.doFinal(md, 0);

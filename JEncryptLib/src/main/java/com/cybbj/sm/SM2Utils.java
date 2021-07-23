@@ -17,9 +17,13 @@ import org.bouncycastle.crypto.params.ECPublicKeyParameters;
 import org.bouncycastle.math.ec.ECPoint;
 
 import com.cybbj.base64.Base64Util;
+import com.cybbj.contants.CommonContants;
 
-import sun.misc.BASE64Decoder;
-
+/**
+ * 使用前需注意SM2类中ecc_param是使用测试环境的还是正式环境的
+ * @author zengqiaowang
+ *
+ */
 public class SM2Utils {
 	//生成随机秘钥对
 	public static void generateKeyPair() throws Exception{
@@ -66,14 +70,16 @@ public class SM2Utils {
 //			System.out.println("C2 " + Util.byteToHex(source));
 //			System.out.println("C3 " + Util.byteToHex(c3));
 		//C1 C2 C3拼装成加密字串
-		//银行加密机截取2位04
-		byte[] c1=Util.hexToByte(c0hexStr.substring(2));
+		//银行加密机截取2位04--工行原稿
+		//byte[] c1=Util.hexToByte(c0hexStr.substring(2));
+		//银联刷脸需要04
+		byte[] c1=Util.hexToByte(c0hexStr);
 		byte[] data1=new byte[c1.length+source.length+c3.length];
 		System.arraycopy(c1, 0, data1, 0, c1.length);
 		System.arraycopy(c3, 0, data1, c1.length, c3.length);
 		System.arraycopy(source, 0, data1, c1.length+c3.length, source.length);
 		
-		base64Str = new String(Base64Util.base64Encode(data1),"gbk");
+		base64Str = new String(Base64Util.base64Encode(data1),CommonContants.DEFAULT_CHARACTER);
 		//System.out.println("encode Base64密文---:"+base64Str);
 		//System.out.println("---:"+Util.byteToHex(data1));
 		
@@ -84,12 +90,14 @@ public class SM2Utils {
 	//数据解密16进制字符串
 	public static byte[] decryptBase64(byte[] privateKey, String encryptedDataBase64) throws Exception{
 		byte[] ret = null;
-		BASE64Decoder decoder = new BASE64Decoder();
-	    byte[] bytes = decoder.decodeBuffer(encryptedDataBase64);
+		/*BASE64Decoder decoder = new BASE64Decoder();
+	    byte[] bytes = decoder.decodeBuffer(encryptedDataBase64);*/
+		byte[] bytes = Base64Util.base64Decode(encryptedDataBase64.getBytes(CommonContants.DEFAULT_CHARACTER));
 	    String encryptedData= Util.byteToHex(bytes);
 	    System.out.println("sm2 encryptedData--"+encryptedData);
 	    //补全04
-	    ret = decryptString(privateKey, "04"+encryptedData);
+	    //ret = decryptString(privateKey, "04"+encryptedData);
+	    ret = decryptString(privateKey, encryptedData);
 		return ret;
 	}
 	
@@ -151,6 +159,7 @@ public class SM2Utils {
 		{
 			return null;
 		}
+		byte[] signdata = null;
 		
 		SM2 sm2 = SM2.Instance();
 		BigInteger userD = new BigInteger(privateKey);
@@ -190,7 +199,7 @@ public class SM2Utils {
 	    v2.add(d_r);
 	    v2.add(d_s);
 	    DERObject sign = new DERSequence(v2);
-	    byte[] signdata = sign.getDEREncoded();
+	    signdata = sign.getDEREncoded();		
 		return signdata;
 	}
 	

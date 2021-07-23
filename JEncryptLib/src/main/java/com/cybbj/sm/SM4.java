@@ -169,6 +169,7 @@ public class SM4 {
 		}
 		
 		byte[] ret = (byte[]) null;
+		//PKCS7Padding补位方式
 		if (mode == SM4_ENCRYPT) 
 		{
 			int p = 16 - input.length % 16;
