@@ -26,7 +26,7 @@ public class SecureUtil {
 	public static byte[] rsaEncryptedData(RSAPublicKey publicKey, byte[] plainData)
 			throws Exception {
 		try {
-			//RSA/ECB/PKCS1Padding	RSA/ECB/NoPadding
+			//RSA/ECB/PKCS1Padding	RSA/ECB/NoPadding 
 			Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding",
 					new org.bouncycastle.jce.provider.BouncyCastleProvider());
 			String algorithm = cipher.getAlgorithm();
