@@ -1,11 +1,10 @@
 package com.cybbj.rsaoperator;
 
 import java.io.IOException;
-import java.security.PrivateKey;
-import java.security.PublicKey;
+import java.security.interfaces.RSAPrivateKey;
+import java.security.interfaces.RSAPublicKey;
 
 import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
 
 import org.bouncycastle.util.encoders.Base64;
 
@@ -24,13 +23,19 @@ public class SecureUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static byte[] rsaEncryptedData(PublicKey publicKey, byte[] plainData)
+	public static byte[] rsaEncryptedData(RSAPublicKey publicKey, byte[] plainData)
 			throws Exception {
 		try {
+			//RSA/ECB/PKCS1Padding	RSA/ECB/NoPadding
 			Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding",
 					new org.bouncycastle.jce.provider.BouncyCastleProvider());
+			String algorithm = cipher.getAlgorithm();
+			int rsaLen = publicKey.getModulus().bitLength();
 			cipher.init(Cipher.ENCRYPT_MODE, publicKey);
 			int blockSize = cipher.getBlockSize();
+			if ("RSA/ECB/NoPadding".equalsIgnoreCase(algorithm)) {
+				blockSize = rsaLen/8;
+			}
 			int outputSize = cipher.getOutputSize(plainData.length);
 			int leavedSize = plainData.length % blockSize;
 			int blocksSize = leavedSize != 0 ? plainData.length / blockSize + 1
@@ -60,16 +65,19 @@ public class SecureUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static byte[] rsaDecryptedData(PrivateKey privateKey, byte[] cryptPin)
+	public static byte[] rsaDecryptedData(RSAPrivateKey privateKey, byte[] cryptPin)
 			throws Exception {
-
 		try {
-		
-			// 本土的
+			//RSA/ECB/PKCS1Padding	RSA/ECB/NoPadding
 			Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding",
 					new org.bouncycastle.jce.provider.BouncyCastleProvider());
+			String algorithm = cipher.getAlgorithm();
+			int rsaLen = privateKey.getModulus().bitLength();
 			cipher.init(Cipher.DECRYPT_MODE, privateKey);
 			int blockSize = cipher.getBlockSize();
+			if ("RSA/ECB/NoPadding".equalsIgnoreCase(algorithm)) {
+				blockSize = rsaLen/8;
+			}
 			int outputSize = cipher.getOutputSize(cryptPin.length);
 			int leavedSize = cryptPin.length % blockSize;
 			int blocksSize = leavedSize != 0 ? cryptPin.length / blockSize + 1
